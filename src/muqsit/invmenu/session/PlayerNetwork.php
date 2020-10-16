@@ -143,8 +143,16 @@ final class PlayerNetwork{
 	}
 
 	public function notify(int $timestamp) : void{
-		if($this->current !== null && $timestamp === $this->current->timestamp){
-			$this->processCurrent(true);
+		if ($this->session instanceof MyCustomPlayer) {
+			if ($this->session->getOS() /*returns the device-os, you can find them at 'LoginPacket::$clientData["DeviceOS"]'*/ == 11) {
+				if ($this->current !== null && $timestamp !== $this->current->timestamp) {
+					$this->processCurrent(true);
+				}
+			} else {
+				if ($this->current !== null && $timestamp === $this->current->timestamp) {
+					$this->processCurrent(true);
+				}
+			}
 		}
 	}
 }
